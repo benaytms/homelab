@@ -9,24 +9,25 @@ notifications, and a few other things — all running locally and accessible rem
 
 The stack is built around a few core pillars:
 
-- **Media** —> Jellyfin handles video streaming with hardware-accelerated transcoding via the RX 6700 XT. 
-The arr stack (Radarr, Sonarr, Lidarr, Bazarr) automates media management, with Prowlarr as the indexer aggregator and qBittorrent as the download client.<br>
+- **Media** —> Jellyfin handles video streaming with transcoding using the GPU. 
+The arr stack ([Radarr](https://wiki.servarr.com/radarr), [Sonarr](https://wiki.servarr.com/en/sonarr), [Lidarr](https://wiki.servarr.com/en/lidarr), [Bazarr](https://github.com/morpheus65535/bazarr)) automates media management, with Prowlarr as the indexer aggregator and qBittorrent as the download client.<br>
 The subtitles for portuguese-brazilian is very lacking for more niche tv shows and movies, so a solution
 i found was to use AI-powered subtitle translation via Ollama, and although not perfect, it's good
 enough for a few occasions. Lingarr is the tool that manages the translations.
 
-- **Music** —> Navidrome serves as a self-hosted music server with Last.fm scrobbling and lyrics support via plugin. 
-Slskd provides access to the Soulseek network for music discovery.
+- **Music** —> [Navidrome](https://github.com/navidrome/navidrome) serves as a self-hosted music server with Last.fm scrobbling and lyrics support via plugin. 
+Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network for music discovery.
 
-- **AI** —> Ollama runs local LLMs with GPU acceleration - i use mostly just for subtitle translation considering it's very heavy, but it does work like a normal chatbot as well. 
+- **AI** —> [Ollama](https://setup-ollama.com/index) runs local LLMs with GPU acceleration - i use mostly just for subtitle translation considering it's very heavy, but it does work like a normal chatbot as well. 
 
-- **Search engine** —> SearXNG is a self-hosted search backend that integrates results from multiple search engines.
+- **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is a self-hosted search backend that integrates results from multiple search engines.
 
-- **Infrastructure** —> Caddy acts as a reverse proxy. Ntfy handles push notifications. Uptime Kuma monitors service health. 
+- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. Ntfy handles push notifications. Uptime Kuma monitors service health. 
 
-- **Password manager** —> Vaultwarden is a self-hosted Bitwarden-compatible password manager.
+- **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
-- **Files & Sync** —> Immich for photo management, Syncthing for file sync across devices, Filebrowser for remote file access, Kavita for ebooks.
+- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management,
+[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access, Kavita for ebooks.
 
 ## Why
 
