@@ -2,7 +2,7 @@
 
 A self-hosted homelab running on my personal machine (Ryzen 5 5600X / RX 6700 XT), 
 managed entirely with Docker Compose. It covers media, AI, photo and file sync, security, 
-notifications, and a few others — all running locally and accessible remotely via Tailscale.
+notifications, and a few other things — all running locally and accessible remotely via Tailscale.
 
 
 ## Services
