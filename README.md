@@ -18,16 +18,16 @@ enough for a few occasions. [Lingarr](https://github.com/lingarr-translate/linga
 - **Music** —> [Navidrome](https://github.com/navidrome/navidrome) serves as a self-hosted music server with Last.fm scrobbling and lyrics support via plugin. 
 Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network for music discovery.
 
-- **AI** —> [Ollama](https://setup-ollama.com/index) runs local LLMs with GPU acceleration - i use mostly just for subtitle translation considering it's very heavy, but it does work like a normal chatbot as well. 
+- **AI** —> [Ollama](https://setup-ollama.com/index) runs a local LLM with GPU acceleration - i use mostly just for subtitle translation considering it's very heavy, but it does work like a normal chatbot as well. 
 
 - **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is a self-hosted search backend that integrates results from multiple search engines.
 
-- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. Ntfy handles push notifications. Uptime Kuma monitors service health. 
+- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health.
 
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
 - **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management,
-[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access, Kavita for ebooks.
+[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access, [Kavita](https://github.com/Kareadita/Kavita) for ebooks.
 
 ## Why
 
