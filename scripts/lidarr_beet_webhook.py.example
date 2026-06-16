@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+from flask import Flask, request
+import subprocess
+import pexpect
+import requests
+import sys
+import os
+
+app = Flask(__name__)
+
+BEET_PATH = <beet_destination>
+PATH_FROM = <music_folder_inside_container>
+PATH_TO = <music_folder_path>
+
+def fetch_and_embed_art(target_path, artist_name, album_title):
+    result = subprocess.run(
+        [BEET_PATH, "ls", "-a", "-f", "$mb_releasegroupid",
+         f"albumartist:{artist_name}", f"album:{album_title}"],
+        capture_output=True, text=True
+    )
+    mb_releasegroupid = result.stdout.strip().split('\n')[0]
+
+    if not mb_releasegroupid:
+        print(f"No mb_releasegroupid found for {artist_name} - {album_title}", flush=True)
+        return
+
+    print(f"Fetching art for release group {mb_releasegroupid}", flush=True)
+
+    try:
+        url = f"https://coverartarchive.org/release-group/{mb_releasegroupid}"
+        response = requests.get(url, timeout=10)
+
+        if response.status_code != 200:
+            print(f"Cover Art Archive returned {response.status_code}", flush=True)
+            return
+
+        data = response.json()
+        images = data.get("images", [])
+
+        if not images:
+            print(f"No images in Cover Art Archive response", flush=True)
+            return
+
+        image_url = None
+        for img in images:
+            if img.get("front", False):
+                image_url = img.get("image")
+                break
+
+        if not image_url:
+            image_url = images[0].get("image")
+
+        if not image_url:
+            print(f"No image URL found", flush=True)
+            return
+
+        img_response = requests.get(image_url, timeout=30)
+        if img_response.status_code != 200:
+            print(f"Failed to download image", flush=True)
+            return
+
+        art_path = os.path.join(target_path, "cover.jpg")
+        with open(art_path, 'wb') as f:
+            f.write(img_response.content)
+        print(f"Art saved to {art_path}", flush=True)
+
+        subprocess.run(
+            [BEET_PATH, "embedart", "-y",
+             f"albumartist:{artist_name}", f"album:{album_title}"],
+            check=True
+        )
+        print(f"Art embedded for {artist_name} - {album_title}", flush=True)
+
+    except Exception as e:
+        print(f"Art fetch error: {e}", flush=True)
+
+
+def run_beet_import(path, mbid=None):
+    if mbid:
+        cmd = f"{BEET_PATH} import --flat '{path}' --search-id {mbid}"
+    else:
+        cmd = f"{BEET_PATH} import --flat '{path}'"
+
+    print(f"Running: {cmd}", flush=True)
+    child = pexpect.spawn(cmd, timeout=120, encoding='utf-8')
+    child.logfile = sys.stdout
+
+    while True:
+        index = child.expect([
+            '➜',
+            r'already in the library',
+            pexpect.EOF,
+            pexpect.TIMEOUT
+        ])
+
+        if index == 0:
+            child.expect('\r\n')
+            first_line = child.before
+            child.expect(r'\?')
+
+            if '# selection' in first_line:
+                child.sendline('1')
+            else:
+                child.sendline('A')
+        elif index == 1:
+            child.sendline('M')
+        else:
+            break
+
+    child.close()
+
+
+@app.route("/beet-import", methods=["POST"])
+def beet_import():
+    data = request.json
+    print(f"Received: {data}", flush=True)
+    try:
+        artist_path = data.get("artist", {}).get("path", "")
+        artist_name = data.get("artist", {}).get("name", "")
+        album_title = data.get("album", {}).get("title", "")
+        album_mbid = data.get("album", {}).get("mbid", "")
+
+        if not artist_path:
+            return {"error": "no path received"}, 400
+
+        host_artist_path = artist_path.replace(PATH_FROM, PATH_TO, 1)
+
+        if not os.path.exists(host_artist_path):
+            return {"error": f"path not found: {host_artist_path}"}, 400
+
+        album_path = None
+        if album_title:
+            title_variations = [
+                album_title.lower(),
+                album_title.lower().replace(' and ', ' & '),
+                album_title.lower().replace(' & ', ' and ')
+            ]
+            for folder in os.listdir(host_artist_path):
+                full_path = os.path.join(host_artist_path, folder)
+                if os.path.isdir(full_path):
+                    folder_lower = folder.lower()
+                    if any(v in folder_lower for v in title_variations):
+                        album_path = full_path
+                        break
+
+        if not album_path:
+            return {"error": f"album folder not found for: {album_title}"}, 400
+
+        print(f"Importing: {album_path}", flush=True)
+
+        run_beet_import(album_path, album_mbid)
+        fetch_and_embed_art(album_path, artist_name, album_title)
+
+        return {"status": "ok"}, 200
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8042, threaded=True)

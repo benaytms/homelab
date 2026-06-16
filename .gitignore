@@ -1,0 +1,39 @@
+# env
+.env
+
+# directories
+filebrowser/
+kavita/
+open-webui/
+seasonarr/
+forgejo/
+kuma-data/
+prowlarr/
+slskd/
+homarr/
+lemmy/
+qbittorrent/
+sonarr/
+bazarr/
+immich/
+lidarr/
+radarr/
+stirling/
+caddy/
+jellyfin/
+lingarr/
+readarr/
+subgen/
+cloudbeaver/
+jellyseerr/
+navidrome/
+tdarr/
+data/
+joplin/
+ollama/
+searxng/
+vw-data/
+
+# script
+subtitle-rename
+lidarr_beet_webhook.py
