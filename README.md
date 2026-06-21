@@ -10,7 +10,7 @@ notifications, and a few other things — all running locally and accessible rem
 The stack is built around a few core pillars:
 
 - **Media** —> [Jellyfin](https://jellyfin.org/) handles video streaming with transcoding using the GPU. 
-The arr stack ([Radarr](https://wiki.servarr.com/radarr), [Sonarr](https://wiki.servarr.com/en/sonarr), [Lidarr](https://wiki.servarr.com/en/lidarr), [Bazarr](https://github.com/morpheus65535/bazarr)) automates media management, with [Prowlarr](https://github.com/Prowlarr/Prowlarr) as the indexer aggregator and qBittorrent as the download client.<br>
+The arr stack ([Radarr](https://wiki.servarr.com/radarr), [Sonarr](https://wiki.servarr.com/en/sonarr), [Lidarr](https://wiki.servarr.com/en/lidarr), [Bazarr](https://github.com/morpheus65535/bazarr)) automates media management, with [Prowlarr](https://github.com/Prowlarr/Prowlarr) as the indexer aggregator and [qBittorrent](https://www.qbittorrent.org/) as the download client.<br>
 The subtitles for portuguese-brazilian is very lacking for more niche tv shows and movies, so a solution
 i found was to use AI-powered subtitle translation via Ollama, and although not perfect, it's good
 enough for a few occasions. [Lingarr](https://github.com/lingarr-translate/lingarr) is the tool that manages the translations.
