@@ -1,3 +1,14 @@
+"""
+This script works by manually adding new music files to beet database, then fetching their album cover arts and embedding it
+
+A core problem with Lidarr is that it gets weird album cover arts by default, so a workaround i found to fix that
+was to use 'beet' which is a media organizer made in Python. It has better metadata managing, album cover art embedding,
+and a few other options. So this script basically uses the name of the artist, name of the album and the MusicBrainz ID 
+for the specific release, it grabs their release-group album cover art (which is often better than the release album cover art)
+and embeds each file.
+"""
+
+
 #!/usr/bin/env python3
 from flask import Flask, request
 import subprocess
