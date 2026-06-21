@@ -27,7 +27,8 @@ Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network f
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
 - **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management,
-[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access, [Kavita](https://github.com/Kareadita/Kavita) for ebooks.
+[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access,
+[Kavita](https://github.com/Kareadita/Kavita) for ebooks management.
 
 ## Why
 
