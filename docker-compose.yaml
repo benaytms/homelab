@@ -88,7 +88,7 @@ services:
         - full
         - server
     volumes:
-        - ./joplin/db/data:/var/lib/postgresql/data
+        - ${SELFHOST_ROOT}/joplin/db/data:/var/lib/postgresql/data
     networks:
         - default
     ports:
@@ -204,6 +204,7 @@ services:
     volumes:
       - ${SELFHOST_ROOT}/qbittorrent/appdata:/config
       - ${SELFHOST_ROOT}/data:/data
+      - /:/root
     environment:
       - TZ=${TZ}
       - WEBUI_PORT=8080
@@ -294,6 +295,8 @@ services:
       - ${MOUNT_COLDSTORE}/media/tv:/data/coldstore/media/tv
       - ${MOUNT_NOTEBOOK}/media/tv:/data/notebook/media/tv
       - ${MOUNT_SECONDSTORE}/media/tv:/data/secondstore/media/tv
+      - ${MOUNT_COLDSTORE}/downloads/complete:/data/coldstore/downloads/complete
+      - /:/root
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
