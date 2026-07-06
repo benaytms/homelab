@@ -73,7 +73,7 @@ services:
       - 8090:80
     volumes:
       - ${HOME_DIR}:/srv
-      - ${SELFHOST_ROOT}/filebrowser/config.db:/database.db
+      - ${SELFHOST_ROOT}/filebrowser/database:/database
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -544,14 +544,56 @@ services:
     networks:
       - default
 
+  invidious:
+    image: quay.io/invidious/invidious:latest
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    environment:
+      INVIDIOUS_CONFIG: |
+        db:
+          dbname: ${INVIDIOUS_DB}
+          user: ${INVIDIOUS_USER}
+          password: ${INVIDIOUS_PASSWD}
+          host: invidious-db
+          port: 5432
+        check_tables: true
+        external_port: 3003
+        hmac_key: "${LONG_KEY}"
+        domain: "${INVIDIOUS_DOMAIN}"
+        https_only: true
+        external_port: 443
+        captcha_enabled: false
+        statistics_enabled: false
+        invidious_companion:
+          - private_url: "${INVIDIOUS_PRIVATE_URL}"
+        invidious_companion_key: "${SHORT_KEY}"
+    depends_on:
+      - invidious-db
+      - invidious-companion
+
+  invidious-companion:
+    image: quay.io/invidious/invidious-companion:latest
+    restart: unless-stopped
+    environment:
+      SERVER_SECRET_KEY: "${SHORT_KEY}"
+
+  invidious-db:
+    image: docker.io/library/postgres:14
+    restart: unless-stopped
+    volumes:
+      - invidious-db:/var/lib/postgresql/data
+      - ${SELFHOST_ROOT}/config/sql:/config/sql
+      - ${SELFHOST_ROOT}/docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
+    environment:
+      POSTGRES_DB: ${INVIDIOUS_DB}
+      POSTGRES_USER: ${INVIDIOUS_USER}
+      POSTGRES_PASSWORD: ${INVIDIOUS_PASSWD}
+
 networks:
   default:
     name: selfhost
 
 volumes:
-  netdata-config:
-  netdata-lib:
-  netdata-cache:
-  portainer_data:
-  nextcloud:
   db:
+  invidious-db:

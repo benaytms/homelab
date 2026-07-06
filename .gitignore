@@ -33,6 +33,8 @@ joplin/
 ollama/
 searxng/
 vw-data/
+docker/
+config/
 
 # script
 subtitle-rename
