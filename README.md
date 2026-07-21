@@ -10,10 +10,10 @@ notifications, and a few other things — all running locally and accessible rem
 The stack is built around a few core pillars:
 
 - **Media** —> [Jellyfin](https://jellyfin.org/) handles video streaming with transcoding using the GPU. 
-The arr stack ([Radarr](https://wiki.servarr.com/radarr), [Sonarr](https://wiki.servarr.com/en/sonarr), [Lidarr](https://wiki.servarr.com/en/lidarr), [Bazarr](https://github.com/morpheus65535/bazarr)) automates media management, with [Prowlarr](https://github.com/Prowlarr/Prowlarr) as the indexer aggregator and [qBittorrent](https://www.qbittorrent.org/) as the download client.<br>
-The subtitles for portuguese-brazilian is very lacking for more niche tv shows and movies, so a solution
-i found was to use AI-powered subtitle translation via Ollama, and although not perfect, it's good
-enough for a few occasions. [Lingarr](https://github.com/lingarr-translate/lingarr) is the tool that manages the translations.
+The arr stack ([Radarr](https://wiki.servarr.com/radarr), [Sonarr](https://wiki.servarr.com/en/sonarr), [Lidarr](https://wiki.servarr.com/en/lidarr), [Bazarr](https://github.com/morpheus65535/bazarr)) automates media management. With [Prowlarr](https://github.com/Prowlarr/Prowlarr) as the indexer aggregator and [qBittorrent](https://www.qbittorrent.org/) as the download client.<br>
+The portuguese-brazilian subtitles tend to be very lacking for more niche tv shows and movies, so a solution i found was to use AI-powered subtitle translation via Ollama,
+and although not perfect, it's good enough for a few occasions.<br>
+[Lingarr](https://github.com/lingarr-translate/lingarr) is the tool that manages the translations.
 I also started using [Invidious](https://github.com/iv-org/invidious) as an open-source wrapper for Youtube.
 
 - **Music** —> [Navidrome](https://github.com/navidrome/navidrome) serves as a self-hosted music server with Last.fm scrobbling and lyrics support via plugin. 
@@ -23,13 +23,14 @@ Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network f
 
 - **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is a self-hosted search backend that integrates results from multiple search engines.
 
-- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Tailscale](https://tailscale.com/) is used as a mesh vpn to allow only me getting access to each service. [Pi-Hole](https://pi-hole.net/) as a network-level ad and tracker blocker. [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health. [Portainer](https://github.com/portainer/portainer) as a container management interface. [Watchtower](https://github.com/nicholas-fedor/watchtower) as a schedule-based container auto-updater. [Dozzle](https://dozzle.dev/) was also added as a log aggregator - making it easier to manage the multiple container's logs.
+- **Security** -> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Tailscale](https://tailscale.com/) is used as a mesh vpn to allow only me getting access to each service.
+[Pi-Hole](https://pi-hole.net/) is a network-level ad and tracker blocker.
+
+- **Infrastructure** —> [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health. [Portainer](https://github.com/portainer/portainer) serves as a container management interface. [Watchtower](https://github.com/nicholas-fedor/watchtower) as a schedule-based container auto-updater. [Dozzle](https://dozzle.dev/) was also added as a log aggregator - making it easier to manage the multiple container's logs.
 
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
-- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management,
-[Syncthing](https://syncthing.net/) for file sync across devices, [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access,
-[Kavita](https://github.com/Kareadita/Kavita) for ebooks management.
+- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Kavita](https://github.com/Kareadita/Kavita) for ebooks management.
 
 ## Why
 
