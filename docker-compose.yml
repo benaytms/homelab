@@ -1,8 +1,53 @@
 services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: always
+    ports:
+      - "${BINDING_PORT}/tcp"
+      - "${BINDING_PORT}/udp"
+      - "8081:80"
+    environment:
+      - TZ=${TZ}
+      - FTLCONF_webserver_api_password=${PIHOLE_PASSWD}
+    volumes:
+      - pihole_etc:/etc/pihole
+      - pihole_dnsmasq:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8889:8080"
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
   ollama:
     image: ollama/ollama:rocm
     container_name: ollama
-    restart: unless-stopped
+    profiles: ["manual"]
+    restart: never
     devices:
       - /dev/dri:/dev/dri
       - /dev/kfd:/dev/kfd
@@ -18,7 +63,8 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
     container_name: open-webui
-    restart: unless-stopped
+    restart: never
+    profiles: ["manual"]
     ports:
       - 3000:8080
     environment:
@@ -36,6 +82,8 @@ services:
     image: searxng/searxng:latest
     container_name: searxng
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 8881:8080
     volumes:
@@ -51,6 +99,8 @@ services:
     image: syncthing/syncthing:latest
     container_name: syncthing
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     user: "${PUID}:${PGID}"
     volumes:
       - ${SELFHOST_ROOT}/data/syncthing:/var/syncthing
@@ -69,6 +119,8 @@ services:
   filebrowser:
     image: filebrowser/filebrowser:latest
     container_name: filebrowser
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 8090:80
     volumes:
@@ -85,45 +137,47 @@ services:
     image: postgres:16
     container_name: joplin-db
     profiles:
-        - full
-        - server
+      - full
+      - server
     volumes:
-        - ${SELFHOST_ROOT}/joplin/db/data:/var/lib/postgresql/data
+      - ${SELFHOST_ROOT}/joplin/db/data:/var/lib/postgresql/data
     networks:
-        - default
+      - default
     ports:
-        - "5432:5432"
+      - "5432:5432"
     restart: unless-stopped
     environment:
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
 
   joplin:
     image: joplin/server:latest
     container_name: joplin
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     profiles:
-        - full
-        - server
+      - full
+      - server
     depends_on:
-        - joplin-db
+      - joplin-db
     ports:
-        - "22300:22300"
+      - "22300:22300"
     networks:
-        - default
+      - default
     restart: unless-stopped
     environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
-        - TZ={TZ}
-        - APP_PORT=22300
-        - APP_BASE_URL=${APP_BASE_URL}
-        - DB_CLIENT=${DB_CLIENT}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_DATABASE=${POSTGRES_DATABASE}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PORT=${POSTGRES_PORT}
-        - POSTGRES_HOST=${POSTGRES_HOST:-joplin-db}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ={TZ}
+      - APP_PORT=22300
+      - APP_BASE_URL=${APP_BASE_URL}
+      - DB_CLIENT=${DB_CLIENT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST:-joplin-db}
     dns:
       - 1.1.1.1
       - 8.8.8.8
@@ -132,6 +186,8 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     user: "${PUID}:${PGID}"
     environment:
       - PUID=${PUID}
@@ -147,6 +203,8 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     devices:
       - /dev/dri:/dev/dri
     ports:
@@ -168,6 +226,8 @@ services:
   navidrome:
     image: deluan/navidrome:develop
     container_name: navidrome
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 4533:4533
     volumes:
@@ -197,6 +257,8 @@ services:
   qbittorrent:
     image: linuxserver/qbittorrent
     container_name: qbittorrent
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 8087:8080
       - 6881:6881
@@ -218,6 +280,8 @@ services:
   prowlarr:
     image: linuxserver/prowlarr
     container_name: prowlarr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 9696:9696
     volumes:
@@ -240,6 +304,8 @@ services:
   flaresolverr:
     image: flaresolverr/flaresolverr
     container_name: flaresolverr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     environment:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
@@ -265,6 +331,8 @@ services:
   radarr:
     image: linuxserver/radarr
     container_name: radarr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 7878:7878
     volumes:
@@ -287,6 +355,8 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 8989:8989
     volumes:
@@ -311,6 +381,8 @@ services:
   lidarr:
     image: linuxserver/lidarr:nightly-3.1.3.4956-ls199
     container_name: lidarr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 8686:8686
     volumes:
@@ -333,6 +405,8 @@ services:
   slskd:
     image: slskd/slskd:latest
     container_name: slskd
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - "5030:5030"
       - "5031:5031"
@@ -356,6 +430,8 @@ services:
   bazarr:
     image: ghcr.io/lavx/bazarr:latest
     container_name: bazarr
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     deploy:
       resources:
         limits:
@@ -393,6 +469,8 @@ services:
     image: ghcr.io/lavx/opensubtitles-scraper:latest
     container_name: opensubtitles-scraper
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     depends_on:
       flaresolverr:
         condition: service_healthy
@@ -412,7 +490,8 @@ services:
   lingarr:
     image: ghcr.io/lingarr-translate/lingarr:latest
     container_name: lingarr
-    restart: unless-stopped
+    restart: never
+    profiles: ["manual"]
     deploy:
       resources:
         limits:
@@ -448,6 +527,8 @@ services:
   caddy:
     build: ${SELFHOST_ROOT}/caddy
     container_name: caddy
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 80:80
       - 443:443
@@ -464,6 +545,8 @@ services:
     image: binwiederhier/ntfy
     container_name: ntfy
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
@@ -482,6 +565,8 @@ services:
     image: louislam/uptime-kuma
     container_name: kuma
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
@@ -495,6 +580,8 @@ services:
     image: linuxserver/kavita:0.8.9
     container_name: kavita
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - 5001:5000
     environment:
@@ -526,9 +613,18 @@ services:
     networks:
       - default
 
+  redis:
+    container_name: immich_redis
+    image: docker.io/valkey/valkey:9@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9
+    healthcheck:
+      test: redis-cli ping || exit 1
+    restart: always
+
   immich-server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     volumes:
       - ${UPLOAD_LOCATION}:/data
       - /etc/localtime:/etc/localtime:ro
@@ -547,6 +643,8 @@ services:
   invidious:
     image: quay.io/invidious/invidious:latest
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     ports:
       - "3003:3000"
     environment:
@@ -575,12 +673,16 @@ services:
   invidious-companion:
     image: quay.io/invidious/invidious-companion:latest
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     environment:
       SERVER_SECRET_KEY: "${SHORT_KEY}"
 
   invidious-db:
     image: docker.io/library/postgres:14
     restart: unless-stopped
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     volumes:
       - invidious-db:/var/lib/postgresql/data
       - ${SELFHOST_ROOT}/config/sql:/config/sql
@@ -590,6 +692,17 @@ services:
       POSTGRES_USER: ${INVIDIOUS_USER}
       POSTGRES_PASSWORD: ${INVIDIOUS_PASSWD}
 
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+      - WATCHTOWER_LABEL_ENABLE=true
+
 networks:
   default:
     name: selfhost
@@ -597,3 +710,6 @@ networks:
 volumes:
   db:
   invidious-db:
+  portainer_data:
+  pihole_etc:
+  pihole_dnsmasq:
