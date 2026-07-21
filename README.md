@@ -23,7 +23,7 @@ Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network f
 
 - **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is a self-hosted search backend that integrates results from multiple search engines.
 
-- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health. [Tailscale](https://tailscale.com/) is used as a mesh vpn to allow only me getting access to each service.
+- **Infrastructure** —> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Tailscale](https://tailscale.com/) is used as a mesh vpn to allow only me getting access to each service. [Pi-Hole](https://pi-hole.net/) as a network-level ad and tracker blocker. [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health. [Portainer](https://github.com/portainer/portainer) as a container management interface. [Watchtower](https://github.com/nicholas-fedor/watchtower) as a schedule-based container auto-updater.
 
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
