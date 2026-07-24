@@ -48,6 +48,6 @@ that comes with modern tech.
 
 The same thinking led to the URBS GTFS project. 
 Looking for a Google Maps replacement with decent transit info for Curitiba, 
-i found that URBS wasn't on the Mobility Database at all. So I built the feed myself. 
-Ideally it would be GTFS Realtime, but URBS doesn't expose a public API — 
-that's reserved for a handful of companies, Google included. But something is still better than nothing.
+i found that URBS wasn't on the Mobility Database at all - which is the global standard for open transit data. 
+So I built the feed myself. Ideally it would be a GTFS Realtime, but URBS doesn't expose a public API — 
+that's reserved for a handful of companies, Google included. But anything is still better than nothing.
