@@ -32,6 +32,8 @@ Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network f
 
 - **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Kavita](https://github.com/Kareadita/Kavita) for ebooks management.
 
+- **Minecraft** —> Minecraft server powered by [Fabric](https://fabricmc.net/) for me and my friends, running via the [itzg/minecraft-server](https://github.com/itzg/docker-minecraft-server) image. Unlike the rest of the stack which stays behind Tailscale — Minecraft's raw TCP protocol doesn't play well with the HTTP-based reverse proxy setup the other services use, so i use an exposed port forwarding with DNS SRV record (for a nice domain name instead of the IP and port number).
+
 ## Why
 
 It started with me being fed-up with subscription services, then it became more about freedom.. 
