@@ -43,7 +43,8 @@ Minecraft's raw TCP protocol doesn't play well with the HTTP reverse proxy setup
 It started with me being fed-up with subscription services, then it became more about freedom.. 
 About not wanting to depend on companies that don't share your values, about owning your own data, 
 the freedom to share resources with people. There's also some stubbornness to it. 
-The kind of "I'll do it this way because i can" that comes from being tired of lack of ownership and planned obsolescence.
+The kind of "I'll do it this way because i can" that comes from being tired of lack of ownership and planned obsolescence
+that comes with modern tech.
 
 The same thinking led to the URBS GTFS project. 
 Looking for a Google Maps replacement with decent transit info for Curitiba, 
