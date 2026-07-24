@@ -2,6 +2,7 @@
 .env
 
 # directories
+minecraft-data/
 filebrowser/
 kavita/
 open-webui/

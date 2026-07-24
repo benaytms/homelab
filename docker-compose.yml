@@ -1,4 +1,27 @@
 services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft
+    ports:
+      - "${EXT_PORT}:${INT_PORT}"
+    environment:
+      TZ: "${TZ}"
+      EULA: "TRUE"
+      TYPE: "FABRIC"
+      VERSION: "26.2"
+      MEMORY: "6G"
+      ONLINE_MODE: "FALSE"
+      ENFORCE_SECURE_PROFILE: "FALSE"
+      ENFORCE_WHITELIST: "TRUE"
+      RCON_ENABLED: "FALSE"
+      VIEW_DISTANCE: "16"
+      SIMULATION_DISTANCE: "4"
+    volumes:
+      - ${SELFHOST_ROOT}/minecraft-data:/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
   pihole:
     image: pihole/pihole:latest
     container_name: pihole
@@ -109,6 +132,7 @@ services:
       - ${BOOKS_DIR}:/var/books
       - ${DOCUMENTS_DIR}:/var/docs
       - ${SELFHOST_ROOT}/data/media/tv/:/var/media/tv
+      - ${HOME_DIR}/mine_backup:/var/mine_backup
     ports:
       - "22000:22000/tcp"
       - "22000:22000/udp"
@@ -577,7 +601,7 @@ services:
       - default
 
   kavita:
-    image: linuxserver/kavita:0.8.9
+    image: linuxserver/kavita:latest
     container_name: kavita
     restart: unless-stopped
     labels:
