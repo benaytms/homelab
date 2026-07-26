@@ -40,3 +40,6 @@ config/
 # script
 subtitle-rename
 lidarr_beet_webhook.py
+
+# log files
+*.log
