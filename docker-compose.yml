@@ -22,6 +22,15 @@ services:
     tty: true
     restart: unless-stopped
 
+  cloudflare-ddns:
+      image: favonia/cloudflare-ddns:latest
+      container_name: cloudflare-ddns
+      environment:
+        CLOUDFLARE_API_TOKEN: "${CLOUDFLARE_TOKEN}"
+        DOMAINS: "mineserver.fdebris.online"
+        PROXIED: "false"
+      restart: unless-stopped
+
   pihole:
     image: pihole/pihole:latest
     container_name: pihole
@@ -216,7 +225,7 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - ADMIN_TOKEN="${ADMIN_TOKEN}"
+      - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
     ports:
       - 81:80
     volumes:
@@ -618,9 +627,9 @@ services:
     networks:
       - default
 
-  database:
-    container_name: immich_postgres
+  immich-db:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
+    container_name: immich-db
     environment:
       POSTGRES_PASSWORD: ${IMMICH_DB_PASSWORD}
       POSTGRES_USER: ${IMMICH_DB_USERNAME}
@@ -635,17 +644,19 @@ services:
     healthcheck:
       disable: false
     networks:
-      - default
+      default:
+        aliases:
+          - database
 
   redis:
-    container_name: immich_redis
+    container_name: immich-redis
     image: docker.io/valkey/valkey:9@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
 
   immich-server:
-    container_name: immich_server
+    container_name: immich-server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     labels:
       - "com.centurylabs.watchtower.enable=true"
@@ -657,7 +668,7 @@ services:
     ports:
       - '2283:2283'
     depends_on:
-      - database
+      - immich-db
     restart: always
     healthcheck:
       disable: false
@@ -717,15 +728,37 @@ services:
       POSTGRES_PASSWORD: ${INVIDIOUS_PASSWD}
 
   watchtower:
-    image: containrrr/watchtower
+    image: nickfedor/watchtower:latest
     container_name: watchtower
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
     environment:
+      - TZ=${TZ}
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr
+      - WATCHTOWER_NOTIFICATION_URL=ntfy://ntfy.fdebris.online/dbn_alerts?scheme=https
       - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+      - WATCHTOWER_SCHEDULE=0 0 2 * * *
       - WATCHTOWER_LABEL_ENABLE=true
+
+  redlib:
+    container_name: redlib
+    build:
+      context: ${SELFHOST_ROOT}/redlib-src
+      dockerfile: Dockerfile.ubuntu
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
+    environment:
+      - REDLIB_DEFAULT_THEME=system
+    ports:
+      - "8082:8080"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
+      interval: 1m
+      timeout: 3s
+    restart: unless-stopped
 
 networks:
   default:

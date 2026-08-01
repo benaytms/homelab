@@ -4,4 +4,4 @@ export DISPLAY=:0.0
 export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/1000/bus"
 
 /usr/bin/notify-send -u normal "Disk Usage" "$USAGE" ; \
-/usr/bin/curl -s -d "$USAGE" https://ntfy.fdebris.online/dbn_alerts
+/usr/bin/curl -s -H "Title: Main Disk Usage" -d "$USAGE" https://ntfy.fdebris.online/dbn_alerts

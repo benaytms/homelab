@@ -36,6 +36,7 @@ searxng/
 vw-data/
 docker/
 config/
+redlib-src/
 
 # script
 subtitle-rename
