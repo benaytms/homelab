@@ -738,7 +738,7 @@ services:
     environment:
       - TZ=${TZ}
       - WATCHTOWER_NOTIFICATIONS=shoutrrr
-      - WATCHTOWER_NOTIFICATION_URL=ntfy://ntfy.fdebris.online/dbn_alerts?scheme=https
+      - WATCHTOWER_NOTIFICATION_URL=${WATCHTOWER_NOTIF_URL}
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_SCHEDULE=0 0 2 * * *
       - WATCHTOWER_LABEL_ENABLE=true
