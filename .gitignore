@@ -37,6 +37,8 @@ vw-data/
 docker/
 config/
 redlib-src/
+paperless/
+affine/
 
 # script
 subtitle-rename

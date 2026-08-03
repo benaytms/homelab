@@ -743,21 +743,115 @@ services:
       - WATCHTOWER_SCHEDULE=0 0 2 * * *
       - WATCHTOWER_LABEL_ENABLE=true
 
-  redlib:
-    container_name: redlib
-    build:
-      context: ${SELFHOST_ROOT}/redlib-src
-      dockerfile: Dockerfile.ubuntu
-    labels:
-      - "com.centurylabs.watchtower.enable=true"
+  broker:
+    image: docker.io/valkey/valkey:9-alpine
+    container_name: broker
+    restart: unless-stopped
+    volumes:
+      - paperless_redisdata:/data
+
+  paperless-db:
+    image: docker.io/library/postgres:18
+    container_name: paperless-db
+    restart: unless-stopped
+    volumes:
+      - paperless_pgdata:/var/lib/postgresql
+    env_file: .env
     environment:
-      - REDLIB_DEFAULT_THEME=system
+      POSTGRES_DB: ${PAPERLESS_DB}
+      POSTGRES_USER: ${PAPERLESS_USER}
+      POSTGRES_PASSWORD: ${PAPERLESS_PASSWD}
+
+  paperless-webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-webserver
+    restart: unless-stopped
+    depends_on:
+      - paperless-db
+      - broker
     ports:
-      - "8082:8080"
+      - "8008:8000"
+    volumes:
+      - paperless_data:/usr/src/paperless/data
+      - paperless_media:/usr/src/paperless/media
+      - ${SELFHOST_ROOT}/paperless/export:/usr/src/paperless/export
+      - ${SELFHOST_ROOT}/paperless/consume:/usr/src/paperless/consume
+    env_file: .env
+    environment:
+      PAPERLESS_REDIS: ${PAPERLESS_REDIS}
+      PAPERLESS_DBHOST: paperless-db
+      PAPERLESS_DBENGINE: ${PAPERLESS_DBENGINE}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_CSRF_TRUSTED_ORIGINS: ${PAPERLESS_DOMAIN}
+      PAPERLESS_URL: ${PAPERLESS_DOMAIN}
+
+  affine:
+    image: ghcr.io/toeverything/affine:${AFFINE_REVISION:-stable}
+    container_name: affine_server
+    ports:
+      - '3010:3010'
+    depends_on:
+      affine-redis:
+        condition: service_healthy
+      affine-postgres:
+        condition: service_healthy
+      affine-migration:
+        condition: service_completed_successfully
+    volumes:
+      - ${SELFHOST_ROOT}/affine/data/storage:/root/.affine/storage
+      - ${SELFHOST_ROOT}/affine/config:/root/.affine/config
+    env_file:
+      - .env
+    environment:
+      - REDIS_SERVER_HOST=affine-redis
+      - DATABASE_URL=postgresql://${AFFINE_DB_USERNAME}:${AFFINE_DB_PASSWORD}@affine-postgres:5432/${AFFINE_DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
+    restart: unless-stopped
+
+  affine-migration:
+    image: ghcr.io/toeverything/affine:${AFFINE_REVISION:-stable}
+    container_name: affine_migration_job
+    volumes:
+      - ${SELFHOST_ROOT}/affine/data/storage:/root/.affine/storage
+      - ${SELFHOST_ROOT}/affine/config:/root/.affine/config
+    command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
+    env_file:
+      - .env
+    environment:
+      - REDIS_SERVER_HOST=affine-redis
+      - DATABASE_URL=postgresql://${AFFINE_DB_USERNAME}:${AFFINE_DB_PASSWORD}@affine-postgres:5432/${AFFINE_DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
+    depends_on:
+      affine-postgres:
+        condition: service_healthy
+      affine-redis:
+        condition: service_healthy
+
+  affine-redis:
+    image: redis
+    container_name: affine_redis
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080"]
-      interval: 1m
-      timeout: 3s
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  affine-postgres:
+    image: pgvector/pgvector:pg16
+    container_name: affine_postgres
+    volumes:
+      - ${SELFHOST_ROOT}/affine/data/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${AFFINE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${AFFINE_DB_PASSWORD}
+      POSTGRES_DB: ${AFFINE_DB_DATABASE:-affine}
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', '${AFFINE_DB_USERNAME}', '-d', '${AFFINE_DB_DATABASE:-affine}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
 networks:
@@ -770,3 +864,7 @@ volumes:
   portainer_data:
   pihole_etc:
   pihole_dnsmasq:
+  paperless_data:
+  paperless_media:
+  paperless_pgdata:
+  paperless_redisdata:
