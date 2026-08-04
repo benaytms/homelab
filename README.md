@@ -30,7 +30,7 @@ considering it can be very heavy, it does work like a normal chatbot as well.
 
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
 
-- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [LazyLibrarian](https://github.com/linuxserver/docker-lazylibrarian) allows you to follow authors and grab metadata for e-books.
+- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) as a document management and aggregator application. [LazyLibrarian](https://github.com/linuxserver/docker-lazylibrarian) allows you to follow authors and grab metadata for e-books.
 [Calibre-Web](https://github.com/linuxserver/docker-calibre-web) serves as a books management and display service.
 
 - **Note-taking** -> [Joplin](https://github.com/linuxserver/docker-joplin) is a note-taking application organized by notebooks - it's very simple and straightforward.
