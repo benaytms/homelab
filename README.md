@@ -44,17 +44,17 @@ HTTP reverse proxy setup the other services use, so instead i use an exposed por
 
 ## Why
 
-It started with me being fed-up with subscription services, then it became more about freedom.. 
-About not wanting to depend on companies that don't share your values, about owning your own data, 
-the freedom to share resources with people. There's also some stubbornness to it. 
-The kind of "I'll do it this way because i can" that comes from being tired of lack of ownership and planned obsolescence
-that comes with modern tech.
+It started with me being fed-up with subscription services, then it became about freedom..
+About not wanting to depend on companies that don't share your values, owning your own data, 
+the freedom to share resources with other people, from being tired of the lack of ownership and 
+planned obsolescence from modern tech. There's also undeniably some pure stubbornness to it.
+The seek of a challenge, the thrill of learning new things while spending hours in debug hell,
+i live for that.
 
-The same thinking led to the URBS GTFS project. 
-Looking for a Google Maps replacement with decent transit info for Curitiba, 
-i found that URBS wasn't on the Mobility Database at all - which is the global standard for open transit data. 
-So I built the feed myself. Ideally it would be a GTFS Realtime, but URBS doesn't expose a public API — 
-that's reserved for a handful of companies, Google included. But anything is still better than nothing.
+The same thinking led to my URBS GTFS project. 
+While looking for a Google Maps replacement with decent transit info for Curitiba, 
+i found that URBS (Curitiba's Public Transport System) wasn't on Mobility Database at all - which is the global database standard 
+for open transit data. So I built the feed myself.
 
 ***
 
