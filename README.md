@@ -21,7 +21,7 @@ Slskd provides access to the [Soulseek](https://www.slsknet.org/news/) network f
 - **AI** —> Ollama, like i mentioned earlier, runs a local LLM instance and even though i just use for subtitle translation,
 considering it can be very heavy, it does work like a normal chatbot as well. 
 
-- **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is a self-hosted metasearch engine, that is, it integrates results from multiple search engines.
+- **Search engine** —> [SearXNG](https://github.com/searxng/searxng) is the one i use. It's a self-hosted metasearch engine, i.e., it integrates results from multiple search engines.
 
 - **Security** -> [Caddy](https://github.com/caddyserver/caddy) acts as a reverse proxy. [Tailscale](https://tailscale.com/) is used as a mesh VPN to allow exclusive access to each service.
 [Pi-Hole](https://pi-hole.net/) is a network-level ad and tracker blocker.
