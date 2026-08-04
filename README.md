@@ -28,7 +28,8 @@ considering it can be very heavy, it does work like a normal chatbot as well.
 
 - **Infrastructure** —> [Ntfy](https://github.com/binwiederhier/ntfy) handles push notifications. [Uptime Kuma](https://github.com/louislam/uptime-kuma) monitors service health. [Portainer](https://github.com/portainer/portainer) serves as a container management interface. [Watchtower](https://github.com/nicholas-fedor/watchtower) as a schedule-based container auto-updater. [Dozzle](https://dozzle.dev/) was also added as a log aggregator - making it easier to manage the multiple container's logs.
 
-- **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager.
+- **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager. Which is great because
+it allows me to use the Bitwarden extension on my browser without having to rely on external servers to store my passwords.
 
 - **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) as a document management and aggregator application. [LazyLibrarian](https://github.com/linuxserver/docker-lazylibrarian) allows you to follow authors and grab metadata for e-books.
 [Calibre-Web](https://github.com/linuxserver/docker-calibre-web) serves as a books management and display service.
