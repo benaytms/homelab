@@ -293,7 +293,7 @@ services:
     labels:
       - "com.centurylabs.watchtower.enable=true"
     ports:
-      - 8087:8080
+      - 8087:8087
       - 6881:6881
       - 6881:6881/udp
     volumes:
@@ -302,7 +302,7 @@ services:
       - /:/root
     environment:
       - TZ=${TZ}
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8087
       - TORRENTING_PORT=6881
       - PUID=${PUID}
       - PGID=${PGID}
@@ -325,12 +325,10 @@ services:
       - PGID=${PGID}
     dns:
       - 1.1.1.1
-      - 1.0.0.1
       - 8.8.8.8
     restart: unless-stopped
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=1
-      - net.ipv6.conf.default.disable_ipv6=1
     networks:
       - default
 
@@ -446,8 +444,8 @@ services:
       - "50300:50300"
     volumes:
       - ${SELFHOST_ROOT}/slskd/data:/app
-      - ${SELFHOST_ROOT}/data/downloads/slskd:/downloads
       - ${MUSIC_DIR}/Artists:/data/music:ro
+      - ${BOOKS_DIR}:/data/books:ro
     environment:
       - SLSKD_SLSK_USERNAME=${SLSKD_USER}
       - SLSKD_SLSK_PASSWORD=${SLSKD_PASSWORD}
@@ -609,23 +607,45 @@ services:
     networks:
       - default
 
-  kavita:
-    image: linuxserver/kavita:latest
-    container_name: kavita
-    restart: unless-stopped
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian:latest
+    container_name: lazylibrarian
     labels:
       - "com.centurylabs.watchtower.enable=true"
-    ports:
-      - 5001:5000
     environment:
-      - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
     volumes:
-      - ${SELFHOST_ROOT}/kavita/config:/config
-      - ${BOOKS_DIR}:/data
+      - ${SELFHOST_ROOT}/lazylibrarian/config:/config
+      - ${SELFHOST_ROOT}/data/downloads/complete:/downloads
+      - ${SELFHOST_ROOT}/slskd/data/downloads:/slskd-downloads
+      - ${BOOKS_DIR}:/books
+    ports:
+      - 5299:5299
     networks:
       - default
+    restart: unless-stopped
+
+  calibre-web:
+    image: lscr.io/linuxserver/calibre-web:latest
+    container_name: calibre-web
+    labels:
+      - "com.centurylabs.watchtower.enable=true"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+    volumes:
+      - ${SELFHOST_ROOT}/calibre-web/config:/config
+      - ${BOOKS_DIR}:/books
+    ports:
+      - 8083:8083
+    networks:
+      - default
+    restart: unless-stopped
 
   immich-db:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23

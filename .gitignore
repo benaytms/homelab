@@ -39,6 +39,8 @@ config/
 redlib-src/
 paperless/
 affine/
+lazylibrarian/
+calibre-web/
 
 # script
 subtitle-rename
@@ -46,3 +48,4 @@ lidarr_beet_webhook.py
 
 # log files
 *.log
+*.txt
