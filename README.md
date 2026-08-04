@@ -4,7 +4,6 @@ A self-hosted homelab running on my personal machine (Ryzen 5 5600X / RX 6700 XT
 managed entirely with Docker Compose. It covers media, AI, photo and file sync, security, 
 notifications, and a few other things — all running locally and accessible remotely via Tailscale.
 
-
 ## Services
 
 The stack is built around a few core pillars:
@@ -38,8 +37,10 @@ it allows me to use the Bitwarden extension on my browser without having to rely
 
 - **Minecraft** —> Minecraft server powered by [Fabric](https://fabricmc.net/) for me and my friends, 
 running via the [itzg/minecraft-server](https://github.com/itzg/docker-minecraft-server) image. 
-Unlike the rest of the stack which stays behind Tailscale — 
-Minecraft's raw TCP protocol doesn't play well with the HTTP reverse proxy setup the other services use, so instead i use an exposed port forwarding.
+Unlike the rest of the stack which stays behind Tailscale — Minecraft's raw TCP protocol doesn't play well with the
+HTTP reverse proxy setup the other services use, so instead i use an exposed port forwarding.
+
+***
 
 ## Why
 
@@ -54,3 +55,12 @@ Looking for a Google Maps replacement with decent transit info for Curitiba,
 i found that URBS wasn't on the Mobility Database at all - which is the global standard for open transit data. 
 So I built the feed myself. Ideally it would be a GTFS Realtime, but URBS doesn't expose a public API — 
 that's reserved for a handful of companies, Google included. But anything is still better than nothing.
+
+***
+
+## Additional Misc. Info
+
+I run all these docker containers on a Debian 13 Trixie with LXQt as DE. I use LibreWolf browser.
+For the very occasional coding i use VSCodium or nano. On my phone i use the [AfterlifeOS](https://afterlifeos.com/) custom rom,
+a de-googled and more customizable version of Android. Which is absolutely incredible, specially considering the size of their team.
+Their main philosophy, **NeverDie**, is one of the main reasons i like it so much.
