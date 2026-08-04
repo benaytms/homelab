@@ -31,8 +31,7 @@ considering it can be very heavy, it does work like a normal chatbot as well.
 - **Password manager** —> [Vaultwarden](https://github.com/dani-garcia/vaultwarden) is a self-hosted Bitwarden-compatible password manager. Which is great because
 it allows me to use the Bitwarden extension on my browser without having to rely on external servers to store my passwords.
 
-- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) as a document management and aggregator application. [LazyLibrarian](https://github.com/linuxserver/docker-lazylibrarian) allows you to follow authors and grab metadata for e-books.
-[Calibre-Web](https://github.com/linuxserver/docker-calibre-web) serves as a books management and display service.
+- **Files & Sync** —> [Immich](https://github.com/immich-app/immich) for photo management. [Syncthing](https://syncthing.net/) for file sync across devices. [Filebrowser](https://github.com/filebrowser/filebrowser) for remote file access. [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) as a document management and aggregator application. [LazyLibrarian](https://github.com/linuxserver/docker-lazylibrarian) allows me to grab metadata for e-books. And [Calibre-Web](https://github.com/linuxserver/docker-calibre-web) serves as a books management and display service.
 
 - **Note-taking** -> [Joplin](https://github.com/linuxserver/docker-joplin) is a note-taking application organized by notebooks - it's very simple and straightforward.
 [Affine](https://github.com/toeverything/docker) is an alternative to Joplin with a little more flair for when i'm feeling fancy.
