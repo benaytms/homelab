@@ -39,8 +39,7 @@ it allows me to use the Bitwarden extension on my browser without having to rely
 - **Minecraft** —> Minecraft server powered by [Fabric](https://fabricmc.net/) for me and my friends, 
 running via the [itzg/minecraft-server](https://github.com/itzg/docker-minecraft-server) image. 
 Unlike the rest of the stack which stays behind Tailscale — 
-Minecraft's raw TCP protocol doesn't play well with the HTTP reverse proxy setup the other services use, so instead i use an exposed port forwarding with DNS SRV record 
-(for a nice domain name instead of the IP and port number).
+Minecraft's raw TCP protocol doesn't play well with the HTTP reverse proxy setup the other services use, so instead i use an exposed port forwarding.
 
 ## Why
 
